@@ -22,7 +22,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
 
     UObject* Owner = OuterObjects[0];
     const FString ThisPropertyName = PropertyHandle->GetProperty()->GetNameCPP();
-    const UClass* OwnerClass = Owner->GetClass();
+    const UClass* OwnerClass = PropertyHandle->GetProperty()->GetOwnerClass();
     TSharedRef<SWrapBox> ButtonBox = SNew(SWrapBox).UseAllottedSize(true);
     TArray<FName> FunctionNames;
 
