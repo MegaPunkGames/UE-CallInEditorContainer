@@ -17,10 +17,9 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
     TArray<UObject*> OuterObjects;
     PropertyHandle->GetOuterObjects(OuterObjects);
 
-    if (OuterObjects.Num() != 1)
+    if (OuterObjects.Num() == 0)
         return;
 
-    UObject* Owner = OuterObjects[0];
     const FString ThisPropertyName = PropertyHandle->GetProperty()->GetNameCPP();
     const UClass* OwnerClass = PropertyHandle->GetProperty()->GetOwnerClass();
     TSharedRef<SWrapBox> ButtonBox = SNew(SWrapBox).UseAllottedSize(true);
@@ -53,7 +52,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                     .ToolTipText(ButtonToolTip)
                     .HAlign(HAlign_Center)
                     .VAlign(VAlign_Center)
-                    .OnClicked_Lambda([Owner, Function] ()
+                    .OnClicked_Lambda([OuterObjects, Function] ()
                         {
                             // We need to make the function CallInEditor if it's not or else we can't call it. It's crazy we can do this at runtime!
                             const bool bWasCallable = Function->GetBoolMetaData(CallInEditorMeta);
@@ -61,7 +60,11 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                             if (!bWasCallable)
                                 Function->SetMetaData(CallInEditorMeta, TEXT("true"));
 
-                            Owner->ProcessEvent(Function, nullptr);
+                            // Call on all selected objects
+                            for (UObject* Owner : OuterObjects)
+                            {
+                                Owner->ProcessEvent(Function, nullptr);
+                            }
 
                             if (!bWasCallable)
                                 Function->SetMetaData(CallInEditorMeta, TEXT("false"));
