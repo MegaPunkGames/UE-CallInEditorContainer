@@ -4,8 +4,13 @@
 #include "CallInEditorContainerDetails.h"
 
 #include "DetailWidgetRow.h"
-#include "ObjectTools.h"
 #include "Widgets/Layout/SWrapBox.h"
+
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 5)
+#include "ObjectTools.h"
+#else
+#include "K2Node_CallFunction.h"
+#endif
 
 TSharedRef<IPropertyTypeCustomization> FCallInEditorContainerDetails::MakeInstance()
 {
@@ -37,7 +42,11 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
         }
 
         static const FName CallInEditorMeta(TEXT("CallInEditor"));
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 5)
         FText ButtonLabel = ObjectTools::GetUserFacingFunctionName(Function);
+#else
+        FText ButtonLabel = UK2Node_CallFunction::GetUserFacingFunctionName(Function);
+#endif
         FText ButtonToolTip = Function->GetToolTipText();
         if (ButtonToolTip.IsEmpty())
         {

@@ -4,17 +4,3 @@
 
 #include "CoreMinimal.h"
 
-
-class FCIEContainerEditorModule : public IModuleInterface
-{
-public:
-    virtual void StartupModule() override;
-    virtual void ShutdownModule() override;
-
-    void OnPostEngineInit();
-
-private:
-    void RegisterCustomPropertyTypeLayout(FName PropertyTypeName, const FOnGetPropertyTypeCustomizationInstance& PropertyTypeLayoutDelegate);
-
-    TSet<FName> RegisteredPropertyTypes;
-};

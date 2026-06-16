@@ -6,7 +6,7 @@
 
 /**
  * This class is just a details panel placeholder to overcome an Unreal bug where you cannot add action buttons
- * in a sub/nested category. It has the unfortunate bug that it will create a new root category and duplicate all
+ * in a sub/nested category. Unreal has the unfortunate bug that it will create a new root category and duplicate all
  * properties in the details panel. This circumvents that bug by using a custom details panel in which we add the
  * desired UFUNCTION buttons.
  */

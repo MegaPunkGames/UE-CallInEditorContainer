@@ -8,8 +8,8 @@ public class CIEContainerTarget : TargetRules
 	public CIEContainerTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
 
-		ExtraModuleNames.AddRange( new string[] { "CIEContainer" } );
+		ExtraModuleNames.AddRange( new[] { "CIEContainer" } );
 	}
 }

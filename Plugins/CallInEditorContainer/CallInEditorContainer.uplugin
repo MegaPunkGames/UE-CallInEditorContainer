@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "CallInEditorContainer",
+	"Description": "Customization helper to add CallInEditor buttons nested under subcategories in the editor.",
+	"Category": "Engine Tools",
+	"CreatedBy": "MegaPunk Games Inc.",
+	"CreatedByURL": "https://megapunkgames.com",
+	"SupportURL": "https://megapunkgames.com",
+	"DocsURL": "https://github.com/MegaPunkGames/UE-CallInEditorContainer",
+	"MarketplaceURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": true,
+	"Plugins": [
+	],
+	"Modules": [
+		{
+			"Name": "CallInEditorContainerEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [ "Win64", "Mac", "Linux" ]
+		}
+	]
+}

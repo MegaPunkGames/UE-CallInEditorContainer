@@ -10,8 +10,5 @@ public class CIEContainerEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
-		DefaultBuildSettings = BuildSettingsVersion.Latest;
-
-		ExtraModuleNames.AddRange( new string[] { "CIEContainer" } );
 	}
 }
