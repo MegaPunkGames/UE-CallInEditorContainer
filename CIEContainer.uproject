@@ -7,10 +7,6 @@
 		{
 			"Name": "CallInEditorContainer",
 			"Enabled": true
-		},
-		{
-			"Name": "MDMetaDataEditor",
-			"Enabled": true
 		}
 	],
 	"Modules": [

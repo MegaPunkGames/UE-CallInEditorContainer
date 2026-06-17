@@ -12,7 +12,7 @@ const FName PropertyEditorModuleName("PropertyEditor");
 void FCallInEditorContainerEditorModule::StartupModule()
 {
 #if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
-    FCoreDelegates::GetOnPostEngineInit().AddRaw(this, &FCIEContainerEditorModule::OnPostEngineInit);
+    FCoreDelegates::GetOnPostEngineInit().AddRaw(this, &FCallInEditorContainerEditorModule::OnPostEngineInit);
 #else
     FCoreDelegates::OnPostEngineInit.AddRaw(this, &FCallInEditorContainerEditorModule::OnPostEngineInit);
 #endif
