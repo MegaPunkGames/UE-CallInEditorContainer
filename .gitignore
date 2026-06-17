@@ -76,5 +76,4 @@ DerivedDataCache/*
 Package
 
 # Keep MDMetaDataEditor instructions within plugin folder
-
-Plugins/MDMetaDataEditor/**/*
+Plugins/MDMetaDataEditor

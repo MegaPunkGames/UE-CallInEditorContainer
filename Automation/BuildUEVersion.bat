@@ -37,13 +37,14 @@ if "%5"=="" goto run
 set outputDirectory=%4
 
 :run
-echo Looking for Unreal at '%baseUnrealDirectory%\Engine\Build\BatchFiles\RunUAT.bat'
-if not exist "%baseUnrealDirectory%\Engine\Build\BatchFiles\RunUAT.bat" (
+set UATLocation=%baseUnrealDirectory%\Engine\Build\BatchFiles\RunUAT.bat
+echo Looking for UAT at '%UATLocation%'
+if not exist "%UATLocation%" (
 	echo Engine version %1 not found.
 	set errorResult=1
 	goto end
 ) else (
-	echo Using engine installed at '%%j'
+	echo Using engine installed at '%baseUnrealDirectory%'
 )
 
 if exist "%outputDirectory%\%1" (
@@ -56,7 +57,7 @@ if exist "%pluginDirectory%/Plugins/CallInEditorContainer/Binaries" (
 )
 
 call pwsh.exe -ExecutionPolicy Unrestricted -command "./ChangePluginVersion.ps1 '%pluginDirectory%\Plugins\CallInEditorContainer\CallInEditorContainer.uplugin' %2"
-call "%baseUnrealDirectory%\Engine\Build\BatchFiles\RunUAT.bat" BuildPlugin -plugin="%pluginDirectory%\Plugins\CallInEditorContainer\CallInEditorContainer.uplugin" -package="%outputDirectory%\%1" %targets%
+call "%UATLocation%" BuildPlugin -plugin="%pluginDirectory%\Plugins\CallInEditorContainer\CallInEditorContainer.uplugin" -package="%outputDirectory%\%1" %targets%
 if %ERRORLEVEL% NEQ 0 (
 	set errorResult=%ERRORLEVEL%
 	goto error
