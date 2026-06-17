@@ -1,0 +1,3 @@
+CallInEditorContainer supports metadata injection plugins like MDMetaDataEditor. However, we cannot distribute it ourselves, nor would we want to do so. Therefore, we invite you to download it directly from their GitHub here : https://github.com/DoubleDeez/MDMetaDataEditor
+
+Note that this demo does demonstrate Blueprint support, which was setup using MDMetaDataEditor. The metadata added through MDMetaDataEditor remains even when MDMetaDataEditor is not installed, therefore we can still see this feature in action.

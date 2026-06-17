@@ -10,7 +10,7 @@
  * properties in the details panel. This circumvents that bug by using a custom details panel in which we add the
  * desired UFUNCTION buttons.
  */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCallInEditorContainer
 {
     GENERATED_BODY()

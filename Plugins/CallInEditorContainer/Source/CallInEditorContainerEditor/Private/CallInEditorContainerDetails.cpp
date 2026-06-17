@@ -26,62 +26,67 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
         return;
 
     const FString ThisPropertyName = PropertyHandle->GetProperty()->GetNameCPP();
-    const UClass* OwnerClass = PropertyHandle->GetProperty()->GetOwnerClass();
+    const UClass* CurrentClass = PropertyHandle->GetOuterBaseClass();
     TSharedRef<SWrapBox> ButtonBox = SNew(SWrapBox).UseAllottedSize(true);
     TArray<FName> FunctionNames;
 
-    OwnerClass->GenerateFunctionList(FunctionNames);
-    for (const FName& FunctionName : FunctionNames)
+    while(CurrentClass != UObject::StaticClass())
     {
-        UFunction* Function = OwnerClass->FindFunctionByName(FunctionName, EIncludeSuperFlag::ExcludeSuper);
-
-        if (Function == nullptr || Function->NumParms > 0 || Function->GetMetaData(TEXT("CallInEditorContainer")) != ThisPropertyName ||
-            Function->ReturnValueOffset != MAX_uint16 || Function->HasAnyFunctionFlags(FUNC_Static))
+        CurrentClass->GenerateFunctionList(FunctionNames);
+        for (const FName& FunctionName : FunctionNames)
         {
-            continue;
-        }
+            UFunction* Function = CurrentClass->FindFunctionByName(FunctionName, EIncludeSuperFlag::ExcludeSuper);
 
-        static const FName CallInEditorMeta(TEXT("CallInEditor"));
-#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 5)
-        FText ButtonLabel = ObjectTools::GetUserFacingFunctionName(Function);
-#else
-        FText ButtonLabel = UK2Node_CallFunction::GetUserFacingFunctionName(Function);
-#endif
-        FText ButtonToolTip = Function->GetToolTipText();
-        if (ButtonToolTip.IsEmpty())
-        {
-            ButtonToolTip = ButtonLabel;
-        }
+            if (Function == nullptr || Function->NumParms > 0 || Function->GetMetaData(TEXT("CallInEditorContainer")) != ThisPropertyName ||
+                Function->ReturnValueOffset != MAX_uint16 || Function->HasAnyFunctionFlags(FUNC_Static))
+            {
+                continue;
+            }
 
-        ButtonBox->AddSlot()
-            .Padding(0.0f, 0.0f, 5.0f, 3.0f)
-            [
-                SNew(SButton)
-                    .Text(FText::FromName(FunctionName))
-                    .ToolTipText(ButtonToolTip)
-                    .HAlign(HAlign_Center)
-                    .VAlign(VAlign_Center)
-                    .OnClicked_Lambda([OuterObjects, Function] ()
-                        {
-                            // We need to make the function CallInEditor if it's not or else we can't call it. It's crazy we can do this at runtime!
-                            const bool bWasCallable = Function->GetBoolMetaData(CallInEditorMeta);
+            static const FName CallInEditorMeta(TEXT("CallInEditor"));
+    #if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 5)
+            FText ButtonLabel = ObjectTools::GetUserFacingFunctionName(Function);
+    #else
+            FText ButtonLabel = UK2Node_CallFunction::GetUserFacingFunctionName(Function);
+    #endif
+            FText ButtonToolTip = Function->GetToolTipText();
+            if (ButtonToolTip.IsEmpty())
+            {
+                ButtonToolTip = ButtonLabel;
+            }
 
-                            if (!bWasCallable)
-                                Function->SetMetaData(CallInEditorMeta, TEXT("true"));
-
-                            // Call on all selected objects
-                            for (UObject* Owner : OuterObjects)
+            ButtonBox->AddSlot()
+                .Padding(0.0f, 0.0f, 5.0f, 3.0f)
+                [
+                    SNew(SButton)
+                        .Text(FText::FromName(FunctionName))
+                        .ToolTipText(ButtonToolTip)
+                        .HAlign(HAlign_Center)
+                        .VAlign(VAlign_Center)
+                        .OnClicked_Lambda([OuterObjects, Function] ()
                             {
-                                Owner->ProcessEvent(Function, nullptr);
-                            }
+                                // We need to make the function CallInEditor if it's not or else we can't call it. It's crazy we can do this at runtime!
+                                const bool bWasCallable = Function->GetBoolMetaData(CallInEditorMeta);
 
-                            if (!bWasCallable)
-                                Function->SetMetaData(CallInEditorMeta, TEXT("false"));
+                                if (!bWasCallable)
+                                    Function->SetMetaData(CallInEditorMeta, TEXT("true"));
 
-                            return FReply::Handled();
+                                // Call on all selected objects
+                                for (UObject* Owner : OuterObjects)
+                                {
+                                    Owner->ProcessEvent(Function, nullptr);
+                                }
 
-                        })
-            ];
+                                if (!bWasCallable)
+                                    Function->SetMetaData(CallInEditorMeta, TEXT("false"));
+
+                                return FReply::Handled();
+
+                            })
+                ];
+        }
+
+        CurrentClass = CurrentClass->GetSuperClass();
     }
 
     HeaderRow

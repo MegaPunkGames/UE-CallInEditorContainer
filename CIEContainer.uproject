@@ -1,11 +1,15 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.1",
+	"EngineAssociation": "5.5",
 	"Category": "",
 	"Description": "",
 	"Plugins": [
 		{
 			"Name": "CallInEditorContainer",
+			"Enabled": true
+		},
+		{
+			"Name": "MDMetaDataEditor",
 			"Enabled": true
 		}
 	],
