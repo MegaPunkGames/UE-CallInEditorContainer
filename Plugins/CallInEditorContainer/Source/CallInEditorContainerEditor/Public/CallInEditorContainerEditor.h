@@ -1,4 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2023-2026 - MegaPunk Games Inc. - All Rights Reserved
+
 
 #pragma once
 
