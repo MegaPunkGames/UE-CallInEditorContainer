@@ -3,6 +3,8 @@ Helper Struct to have CallInEditor buttons nested within subcategories in the De
 
 Unreal doesn't allow having nested CallInEditor in subcategories, hiding the buttons or reordering them in the Details panel. This plugin adds those features by forwarding the buttons to a "Container".
 
+Get this plugin on Fab: https://www.fab.com/listings/dcc4e9bb-9097-48c0-a9cf-30168b003463
+
 # Installation
 ## From Fab
 - Open Fab in the Epic Game Launcher
