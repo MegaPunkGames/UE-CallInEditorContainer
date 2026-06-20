@@ -13,8 +13,8 @@ Example:
 ## From Fab
 - Open Fab in the Epic Game Launcher
 - Find the plugin from the catalog
-- Clikc the install plugin button
-- Select the desired engine version and click Install
+- Click the install plugin button
+- Select the desired engine version and Install
 - Open your game project
 - Go to the Plugins page and find CallInEditorContainer
 - Enable the plugin
