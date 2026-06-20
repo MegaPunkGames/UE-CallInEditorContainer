@@ -3,8 +3,8 @@ Helper Struct to have CallInEditor buttons nested within subcategories in the De
 
 Unreal doesn't allow having nested CallInEditor in subcategories, hiding the buttons or reordering them in the Details panel. This plugin adds those features by forwarding the buttons to a "Container".
 
-To do so, you must first add a UPROPERTY of class `FCallInEditorContainer`. You will use this UPROPERTY to mange your buttons using categories or meta tags (DisplayAfter, EditConditionHides, etc.)
-You then simply need to mark your UFUNCTIONs with the `CallInEditorContainer=[PROPERTYNAME]` meta tag to place them within the container.
+To do so, you must first add a UPROPERTY of class `FCallInEditorContainer`. You will use this UPROPERTY to manage your buttons using attributes and meta tags (Category, DisplayAfter, EditConditionHides, etc.)
+You then simply need to mark your UFUNCTIONs with the `meta=(CallInEditorContainer=[PROPERTYNAME])` meta tag to place them within the container.
 
 Example:
 <img width="2267" height="762" alt="Capture d’écran 2026-06-14 111438" src="https://github.com/user-attachments/assets/2bbdccee-fe86-4397-8d37-924c7695d5cc" />
