@@ -27,7 +27,9 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory1|SubSubCat")
 	FCallInEditorContainer DemoContainer;
-	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory2|SubSubCat", meta=(DisplayAfter="bEditCondition", EditCondition = "bEditCondition", EditConditionHides))
+	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory1|SubSubCat", meta=(EditCondition = "!bEditCondition"))
+	FCallInEditorContainer DemoContainerDisabled;
+	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory2|SubSubCat", meta=(DisplayAfter="bEditCondition", EditCondition = "bEditCondition && bCheckbox", EditConditionHides))
 	FCallInEditorContainer DemoContainer2;
 	UPROPERTY(EditAnywhere, Category="CIEContainer|SubCategory2|SubSubCat")
 	bool bEditCondition;
@@ -36,6 +38,9 @@ private:
 
 	UFUNCTION(meta=(CallInEditorContainer="DemoContainer"))
 	void TestCallInContainer() { }
+
+	UFUNCTION(meta=(CallInEditorContainer="DemoContainerDisabled"))
+	void TestCallInContainerDisabled() { }
 
 	UFUNCTION(meta=(CallInEditorContainer="DemoContainer2"))
 	void TestCallInContainer2() { }
