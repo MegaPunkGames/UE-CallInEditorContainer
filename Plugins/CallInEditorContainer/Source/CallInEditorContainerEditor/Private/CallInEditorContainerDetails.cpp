@@ -33,7 +33,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
     TSharedRef<SWrapBox> ButtonBox = SNew(SWrapBox).UseAllottedSize(true);
     
     // Validate and warn if EditCondition is not supported for button disabling. See https://github.com/MegaPunkGames/UE-CallInEditorContainer/issues/3
-	bool bNegateTemp;
+    bool bNegateTemp;
     const FBoolProperty* EditConditionPropertyTemp = PropertyCustomizationHelpers::GetEditConditionProperty(PropertyHandle->GetProperty(), bNegateTemp);
     const FString& EditCondition = PropertyHandle->GetMetaData(TEXT("EditCondition"));
     const bool EditConditionHides = PropertyHandle->GetBoolMetaData(TEXT("EditConditionHides"));
@@ -44,7 +44,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
 
     while(CurrentClass != UObject::StaticClass())
     {
-		TArray<FName> FunctionNames;
+        TArray<FName> FunctionNames;
 
         CurrentClass->GenerateFunctionList(FunctionNames);
         for (const FName& FunctionName : FunctionNames)
@@ -77,20 +77,20 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                         .ToolTipText(ButtonToolTip)
                         .HAlign(HAlign_Center)
                         .VAlign(VAlign_Center)
-						.IsEnabled_Lambda([OuterObjects, PropertyHandle] ()
+                        .IsEnabled_Lambda([OuterObjects, PropertyHandle] ()
                             {
                                 bool bEditable = true; // Default
-							    bool bNegate;
-							    FBoolProperty* EditConditionProperty = PropertyCustomizationHelpers::GetEditConditionProperty(PropertyHandle->GetProperty(), bNegate);
-							    if (EditConditionProperty)
-							    {
-									const void* ValuePtr = EditConditionProperty->ContainerPtrToValuePtr<uint8>(OuterObjects[0]);
-							        bEditable = EditConditionProperty->GetPropertyValue(ValuePtr);
-							        if (bNegate)
-							            bEditable = !bEditable;
-							    }
+                                bool bNegate;
+                                FBoolProperty* EditConditionProperty = PropertyCustomizationHelpers::GetEditConditionProperty(PropertyHandle->GetProperty(), bNegate);
+                                if (EditConditionProperty)
+                                {
+                                    const void* ValuePtr = EditConditionProperty->ContainerPtrToValuePtr<uint8>(OuterObjects[0]);
+                                    bEditable = EditConditionProperty->GetPropertyValue(ValuePtr);
+                                    if (bNegate)
+                                        bEditable = !bEditable;
+                                }
 
-								return bEditable;
+                                return bEditable;
                             })
                         .OnClicked_Lambda([OuterObjects, Function] ()
                             {

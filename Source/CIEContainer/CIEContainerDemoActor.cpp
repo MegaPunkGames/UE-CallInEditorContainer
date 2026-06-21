@@ -4,6 +4,8 @@
 #include "CIEContainerDemoActor.h"
 
 
+DEFINE_LOG_CATEGORY(LogCIEContainerDemo);
+
 // Sets default values
 ACIEContainerDemoActor::ACIEContainerDemoActor()
 {
@@ -22,5 +24,20 @@ void ACIEContainerDemoActor::BeginPlay()
 void ACIEContainerDemoActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACIEContainerDemoActor::TestCallInContainer() const
+{
+	UE_LOG(LogCIEContainerDemo, Log, TEXT("TestCallInContainer called on actor %s"), *this->GetActorNameOrLabel());
+}
+
+void ACIEContainerDemoActor::TestCallInContainerDisabled() const
+{
+	UE_LOG(LogCIEContainerDemo, Log, TEXT("TestCallInContainerDisabled called on actor %s"), *this->GetActorNameOrLabel());
+}
+
+void ACIEContainerDemoActor::TestCallInContainer2() const
+{
+	UE_LOG(LogCIEContainerDemo, Log, TEXT("TestCallInContainer2 called on actor %s"), *this->GetActorNameOrLabel());
 }
 
