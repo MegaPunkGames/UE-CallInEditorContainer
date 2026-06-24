@@ -22,6 +22,8 @@ TSharedRef<IPropertyTypeCustomization> FCallInEditorContainerDetails::MakeInstan
 
 void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> PropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
+    static const FName CallInEditorMeta(TEXT("CallInEditor"));
+
     TArray<UObject*> OuterObjects;
     PropertyHandle->GetOuterObjects(OuterObjects);
 
@@ -57,7 +59,12 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                 continue;
             }
 
-            static const FName CallInEditorMeta(TEXT("CallInEditor"));
+            const bool bIsCallInEditor = Function->GetBoolMetaData(CallInEditorMeta);
+            if (bIsCallInEditor)
+            {
+				UE_LOG(LogCallInEditorContainer, Warning, TEXT("CallInEditorContainer function '%s' is marked as CallInEditor. This will lead to a duplicated button in the Details panel. You should remove the CallInEditor attribute."), *FunctionName.ToString());
+            }
+
     #if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 5)
             FText ButtonLabel = ObjectTools::GetUserFacingFunctionName(Function);
     #else
@@ -73,7 +80,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                 .Padding(0.0f, 0.0f, 5.0f, 3.0f)
                 [
                     SNew(SButton)
-                        .Text(FText::FromName(FunctionName))
+                        .Text(ButtonLabel)
                         .ToolTipText(ButtonToolTip)
                         .HAlign(HAlign_Center)
                         .VAlign(VAlign_Center)
@@ -92,12 +99,10 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
 
                                 return bEditable;
                             })
-                        .OnClicked_Lambda([OuterObjects, Function] ()
+                        .OnClicked_Lambda([OuterObjects, Function, bIsCallInEditor] ()
                             {
-                                // We need to make the function CallInEditor if it's not or else we can't call it. It's crazy we can do this at runtime!
-                                const bool bWasCallable = Function->GetBoolMetaData(CallInEditorMeta);
-
-                                if (!bWasCallable)
+                                // We need to make the function CallInEditor to execute it.
+                                if (!bIsCallInEditor)
                                     Function->SetMetaData(CallInEditorMeta, TEXT("true"));
 
                                 // Call on all selected objects
@@ -106,7 +111,7 @@ void FCallInEditorContainerDetails::CustomizeHeader(TSharedRef<IPropertyHandle> 
                                     Owner->ProcessEvent(Function, nullptr);
                                 }
 
-                                if (!bWasCallable)
+                                if (!bIsCallInEditor)
                                     Function->SetMetaData(CallInEditorMeta, TEXT("false"));
 
                                 return FReply::Handled();

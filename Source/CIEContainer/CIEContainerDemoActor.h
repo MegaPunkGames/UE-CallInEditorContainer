@@ -28,9 +28,9 @@ public:
 
 private:
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory1|SubSubCat")
+	UPROPERTY(VisibleDefaultsOnly, Category="CIEContainer|SubCategory1|SubSubCat")
 	FCallInEditorContainer DemoContainer;
-	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory1|SubSubCat", meta=(EditCondition = "!bEditCondition"))
+	UPROPERTY(VisibleInstanceOnly, Category="CIEContainer|SubCategory1|SubSubCat", meta=(EditCondition = "!bEditCondition"))
 	FCallInEditorContainer DemoContainerDisabled;
 	UPROPERTY(VisibleAnywhere, Category="CIEContainer|SubCategory2|SubSubCat", meta=(DisplayAfter="bEditCondition", EditCondition = "bEditCondition && bCheckbox", EditConditionHides))
 	FCallInEditorContainer DemoContainer2;
@@ -44,7 +44,7 @@ private:
 	UFUNCTION(meta=(CallInEditorContainer="DemoContainer"))
 	void TestCallInContainer() const;
 
-	UFUNCTION(meta=(CallInEditorContainer="DemoContainerDisabled"))
+	UFUNCTION(DisplayName="DisplayName Support", meta=(Tooltip = "Button disabling on EditCondition", CallInEditorContainer="DemoContainerDisabled"))
 	void TestCallInContainerDisabled() const;
 
 	UFUNCTION(meta=(CallInEditorContainer="DemoContainer2"))
